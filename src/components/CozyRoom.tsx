@@ -7,9 +7,9 @@ import { useToast } from '@/hooks/use-toast';
 // Define friend data with new pixel art images and positions
 // TODO update friends to ig handles
 const friends = [
-  { id: '1', name: 'Friend Alpha', imageSrc: '/assets/friend-pixel-1.png', position: 'bottom-1/4 left-1/4' },
-  { id: '2', name: 'Friend Beta', imageSrc: '/assets/friend-pixel-2.png', position: 'bottom-1/3 left-1/2' }, // Centered more towards the bottom
-  { id: '3', name: 'Friend Gamma', imageSrc: '/assets/friend-pixel-3.png', position: 'bottom-1/4 right-1/4' }, // On the right side
+  { id: '1', name: 'Friend Alpha', imageSrc: '/assets/friend-pixel-1.png', position: 'bottom-[20%] left-[25%]' },
+  { id: '2', name: 'Friend Beta', imageSrc: '/assets/friend-pixel-2.png', position: 'bottom-[30%] left-[44%]' }, // Centered more towards the bottom
+  { id: '3', name: 'Friend Gamma', imageSrc: '/assets/friend-pixel-3.png', position: 'bottom-[20%] right-[25%]' }, // On the right side
 ];
 
 const CozyRoom: React.FC = () => {
@@ -48,7 +48,7 @@ const CozyRoom: React.FC = () => {
           label="Leaderboard"
           onClick={handleLeaderboardClick}
           // Updated position to be near the book in the background image
-          positionClasses="top-[58%] left-[48%]"
+          positionClasses="top-[46%] left-[44%]"
         />
 
         {friends.map((friend) => (

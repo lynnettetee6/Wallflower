@@ -27,7 +27,7 @@ const Book: React.FC<BookProps> = ({ IconComponent, imageSrc, label, onClick, po
       <div className="transition-all duration-300 group-hover:scale-110 flex items-center justify-center">
         {imageSrc ? (
           // Enlarged image size from w-7 h-7 to w-24 h-24
-          <img src={imageSrc} alt={label} className="w-24 h-24 object-contain" />
+          <img src={imageSrc} alt={label} className="w-[12vh] h-[12vh] object-contain" />
         ) : IconComponent ? (
           <IconComponent size={28} className={`transition-colors duration-300 ${iconColor} group-hover:text-accent-foreground`} />
         ) : null}
