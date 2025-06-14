@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
@@ -19,13 +18,8 @@ const RefreshTimeSettings: React.FC = () => {
     const friendUsernames = friends.map(f => f.name);
 
     try {
-      // This is where you would call your backend API.
-      // Since I can't run a backend, I'll log the intended action and use mock data.
-      console.log('Attempting to fetch stories from localhost:3000/api/check-stories with usernames:', friendUsernames);
-      
-      /*
-      // Example of how you would fetch data from your real API:
-      const response = await fetch('http://localhost:3000/api/check-stories', {
+      console.log('Attempting to fetch stories from API with usernames:', friendUsernames);
+      const response = await fetch('/api/check-stories', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ usernames: friendUsernames }),
@@ -34,33 +28,50 @@ const RefreshTimeSettings: React.FC = () => {
       if (!response.ok) {
         throw new Error(`API Error: ${response.statusText}`);
       }
-      const fetchedStoriesByFriend = await response.json(); 
-      */
 
-      // Mocking the API response with placeholder images
-      const mockApiResponse: { [key: string]: string[] } = {
-        "Friend Alpha": ["https://images.unsplash.com/photo-1582562124811-c09040d0a901"],
-        "Friend Beta": ["https://images.unsplash.com/photo-1618160702438-9b02ab6515c9", "https://images.unsplash.com/photo-1517022812141-23620dba5c23"],
-        "Friend Gamma": ["https://images.unsplash.com/photo-1535268647677-300dbf3d78d1"],
-      };
+      const { success, data } = await response.json();
+      console.log('Raw API Response:', { success, data });
 
-      const newStories = Object.entries(mockApiResponse).flatMap(([friendName, imageUrls]) =>
-        imageUrls.map((url: string) => ({
-          id: `${friendName}-${Date.now()}-${Math.random()}`,
+      if (!success) {
+        throw new Error('API returned unsuccessful response');
+      }
+
+      // Transform the API response into Story objects
+      // Each data item is in format "friendName:filename"
+      const newStories = data.map(item => {
+        const [friendName, filename] = item.split(':');
+        return {
+          id: `story-${Date.now()}-${Math.random()}`,
           friendName,
-          imageUrl: url,
-        }))
-      );
+          imageUrl: `/stories/${filename}` // Use only the filename part after the colon
+        };
+      });
 
+      console.log('Transformed stories:', newStories);
       setStories(newStories);
+
+      // Group stories by friend for the success message
+      const storiesByFriend = newStories.reduce((acc, story) => {
+        acc[story.friendName] = (acc[story.friendName] || 0) + 1;
+        return acc;
+      }, {} as Record<string, number>);
+
+      const friendSummary = Object.entries(storiesByFriend)
+        .map(([friend, count]) => `${friend} (${count})`)
+        .join(', ');
 
       toast({
         title: "Success!",
-        description: `Found new stories for ${Object.keys(mockApiResponse).length} friends.`,
+        description: `Found stories for: ${friendSummary}`,
       });
 
     } catch (error) {
       console.error("Failed to fetch stories:", error);
+      console.error("Error details:", {
+        name: error.name,
+        message: error.message,
+        stack: error.stack
+      });
       toast({
         title: "Error",
         description: "Could not fetch stories. Is the local server running?",

@@ -8,6 +8,12 @@ export default defineConfig(({ mode }) => ({
   server: {
     host: "::",
     port: 8080,
+    proxy: {
+      '/api': {
+        target: 'http://localhost:3000',
+        changeOrigin: true
+      }
+    }
   },
   plugins: [
     react(),
@@ -18,5 +24,12 @@ export default defineConfig(({ mode }) => ({
     alias: {
       "@": path.resolve(__dirname, "./src"),
     },
+  },
+  build: {
+    sourcemap: true, // Always generate source maps
+  },
+  // Enhanced dev source maps for better debugging
+  css: {
+    devSourcemap: true, // Enable CSS source maps
   },
 }));

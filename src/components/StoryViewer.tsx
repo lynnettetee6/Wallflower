@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Dialog, DialogContent } from '@/components/ui/dialog';
 import { Story } from '@/store/appStore';
@@ -13,18 +12,22 @@ interface StoryViewerProps {
 
 const StoryViewer: React.FC<StoryViewerProps> = ({ stories, open, onOpenChange }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
+  console.log('StoryViewer rendered with:', { stories, open, currentIndex }); // Debug log
 
   React.useEffect(() => {
     if (open) {
       setCurrentIndex(0);
+      console.log('StoryViewer opened, reset to first story'); // Debug log
     }
   }, [open]);
 
   if (!stories || stories.length === 0) {
+    console.log('No stories to display in StoryViewer'); // Debug log
     return null;
   }
 
   const currentStory = stories[currentIndex];
+  console.log('Current story:', currentStory); // Debug log
 
   const goToNext = (e: React.MouseEvent) => {
     e.stopPropagation();

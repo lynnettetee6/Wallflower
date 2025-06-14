@@ -1,4 +1,3 @@
-
 import React from 'react';
 
 export interface Friend {
@@ -20,19 +19,32 @@ interface AppState {
   stories: Story[];
 }
 
-const initialState: AppState = {
-  friends: [
-    { id: '1', name: 'lynnette.tee', imageSrc: '/assets/friend-pixel-1.png', storyMessage: "Just swam fifteen laps! 🏊‍♀️", position: 'bottom-[20%] left-[25%]' },
-    { id: '2', name: 'loopholehackers', imageSrc: '/assets/friend-pixel-2.png', storyMessage: "The vibe is strong in these coders! 🎨", position: 'bottom-[30%] left-[44%]' },
-    { id: '3', name: 'aitinkererskl', imageSrc: '/assets/friend-pixel-3.png', storyMessage: "AI moves mountains! ⛰️", position: 'bottom-[20%] right-[25%]' }, //TODO AI story message or parse <img ...
-  ],
-  stories: [],
+// Load initial state from localStorage or use default
+const loadInitialState = (): AppState => {
+  const savedState = localStorage.getItem('appState');
+  if (savedState) {
+    try {
+      return JSON.parse(savedState);
+    } catch (e) {
+      console.error('Failed to parse saved state:', e);
+    }
+  }
+  return {
+    friends: [
+      { id: '1', name: 'lynnette.tee', imageSrc: '/assets/friend-pixel-1.png', storyMessage: "Just swam fifteen laps! 🏊‍♀️", position: 'bottom-[20%] left-[25%]' },
+      { id: '2', name: 'loopholehackers', imageSrc: '/assets/friend-pixel-2.png', storyMessage: "The vibe is immaculate in these coders! 🎨", position: 'bottom-[30%] left-[44%]' },
+      { id: '3', name: 'aitinkererskl', imageSrc: '/assets/friend-pixel-3.png', storyMessage: "AI moves mountains! ⛰️", position: 'bottom-[20%] right-[25%]' },
+    ],
+    stories: [],
+  };
 };
 
-let memoryState: AppState = { ...initialState };
+let memoryState: AppState = loadInitialState();
 const listeners: Array<(state: AppState) => void> = [];
 
 function emitChange() {
+  // Save to localStorage whenever state changes
+  localStorage.setItem('appState', JSON.stringify(memoryState));
   for (const listener of listeners) {
     listener(memoryState);
   }

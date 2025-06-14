@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import Avatar from './Avatar';
 import Book from './Book';
@@ -12,22 +11,35 @@ const CozyRoom: React.FC = () => {
   const { toast } = useToast();
   const navigate = useNavigate();
   const { friends, stories } = useAppStore();
+  console.log('Current stories in store:', stories); // Debug log
 
   const [isStoryViewerOpen, setIsStoryViewerOpen] = useState(false);
   const [activeStories, setActiveStories] = useState<Story[]>([]);
 
   const handleAvatarClick = (friendName: string) => {
-    const friendStories = stories.filter(s => s.friendName === friendName);
+    console.log('Avatar clicked for friend:', friendName); // Debug log
+    console.log('All stories:', stories); // Debug log
+    
+    // Find all images that belong to this friend by matching the friend name in the image filename
+    const friendImages = stories.filter(story => {
+      const imageFileName = story.imageUrl.toLowerCase();
+      const normalizedFriendName = friendName.toLowerCase().replace(' ', '.');
+      console.log('Comparing:', { imageFileName, normalizedFriendName }); // Debug log
+      return imageFileName.includes(normalizedFriendName);
+    });
 
-    if (friendStories.length > 0) {
-      setActiveStories(friendStories);
+    console.log('Filtered stories for friend:', friendImages); // Debug log
+
+    if (friendImages.length > 0) {
+      console.log('Setting active stories:', friendImages); // Debug log
+      setActiveStories(friendImages);
       setIsStoryViewerOpen(true);
     } else {
       toast({
-        title: `No new stories from ${friendName}`,
+        title: `No images from ${friendName}`,
         description: "Try refreshing from the settings page!",
       });
-      console.log(`Clicked on ${friendName}, no stories found.`);
+      console.log(`No images found for ${friendName}`); // Debug log
     }
   };
 
