@@ -1,8 +1,7 @@
-
 import React from 'react';
 import { LucideProps } from 'lucide-react';
 
-interface InteractiveItemProps {
+interface BookProps {
   IconComponent?: React.ElementType<LucideProps>; // Made optional
   imageSrc?: string; // Added new prop for image URL
   label: string;
@@ -11,9 +10,9 @@ interface InteractiveItemProps {
   iconColor?: string; // Still used if IconComponent is provided
 }
 
-const InteractiveItem: React.FC<InteractiveItemProps> = ({ IconComponent, imageSrc, label, onClick, positionClasses, iconColor = "text-foreground" }) => {
+const Book: React.FC<BookProps> = ({ IconComponent, imageSrc, label, onClick, positionClasses, iconColor = "text-foreground" }) => {
   if (!IconComponent && !imageSrc) {
-    console.warn("InteractiveItem: Must provide either IconComponent or imageSrc.");
+    console.warn("Book: Must provide either IconComponent or imageSrc.");
     return null; // Or render a placeholder
   }
 
@@ -39,4 +38,4 @@ const InteractiveItem: React.FC<InteractiveItemProps> = ({ IconComponent, imageS
   );
 };
 
-export default InteractiveItem;
+export default Book;

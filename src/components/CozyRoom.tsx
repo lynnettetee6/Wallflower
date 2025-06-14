@@ -1,10 +1,11 @@
 import React from 'react';
 import Avatar from './Avatar';
-import InteractiveItem from './InteractiveItem';
+import Book from './Book';
 import { Users } from 'lucide-react';
-import { useToast } from '@/hooks/use-toast';
+import { useToast } from '@/hooks/use-toast'; //@ == src // hook - a kind of function
 
 // Define friend data with new pixel art images and positions
+// TODO update friends to ig handles
 const friends = [
   { id: '1', name: 'Friend Alpha', imageSrc: '/assets/friend-pixel-1.png', position: 'bottom-1/4 left-1/4' },
   { id: '2', name: 'Friend Beta', imageSrc: '/assets/friend-pixel-2.png', position: 'bottom-1/3 left-1/2' }, // Centered more towards the bottom
@@ -14,7 +15,7 @@ const friends = [
 const CozyRoom: React.FC = () => {
   const { toast } = useToast();
 
-  const handleAvatarClick = (friendName: string) => {
+  const handleAvatarClick = (friendName: string) => { //declare a event handler - used later see below
     toast({
       title: `${friendName}'s Activity`,
       description: "Showing latest stories, posts, and DMs... (placeholder)",
@@ -37,7 +38,7 @@ const CozyRoom: React.FC = () => {
 
   return (
     <div className="relative w-full h-screen bg-cover bg-center font-sans" style={{ backgroundImage: "url('/assets/cozy-room-pixel.png')" }}>
-      {/* Overlay for a cozier feel, adjust opacity as needed */}
+      {/* Tailwind css - in-html css. Overlay for a cozier feel, adjust opacity as needed */}
       <div className="absolute inset-0 bg-black bg-opacity-10"></div>
 
       <div className="relative z-10 w-full h-full">
@@ -51,11 +52,11 @@ const CozyRoom: React.FC = () => {
           />
         ))}
 
-        <InteractiveItem
+        <Book
           imageSrc="/assets/book.png"
           label="Leaderboard"
           onClick={handleLeaderboardClick}
-          positionClasses="bottom-1/4 left-1/2"
+          positionClasses="bottom-2/4 left-1/2"
         />
         
         {/* You can add more InteractiveItem components here */}

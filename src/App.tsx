@@ -1,8 +1,8 @@
-import { Toaster } from "@/components/ui/toaster";
-import { Toaster as Sonner } from "@/components/ui/sonner";
-import { TooltipProvider } from "@/components/ui/tooltip";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { Toaster } from "@/components/ui/toaster"; // show message notifs to users
+import { Toaster as Sonner } from "@/components/ui/sonner"; 
+import { TooltipProvider } from "@/components/ui/tooltip"; // for little popups that appear when you hover over elements
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query"; // for data fetching and caching
+import { BrowserRouter, Routes, Route } from "react-router-dom"; // for routing (app navigation)
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 
@@ -11,8 +11,8 @@ const queryClient = new QueryClient();
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
-      <Toaster />
-      <Sonner />
+      <Toaster /> {/* TODO need?*/}
+      <Sonner /> {/* TODO need?*/}
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Index />} />
