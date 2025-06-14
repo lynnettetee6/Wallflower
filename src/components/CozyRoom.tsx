@@ -3,6 +3,7 @@ import Avatar from './Avatar';
 import Book from './Book';
 import { Users } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import { Link } from 'react-router-dom';
 
 // Define friend data with new pixel art images, positions, and story messages
 const friends = [
@@ -38,6 +39,10 @@ const CozyRoom: React.FC = () => {
   return (
     <div className="relative w-full h-screen bg-cover bg-center font-sans" style={{ backgroundImage: "url('/assets/cozy-room-pixel.png')" }}>
       <div className="absolute inset-0 bg-black bg-opacity-10"></div>
+
+      <Link to="/settings" className="absolute top-4 right-4 z-20 hover:scale-110 transition-transform cursor-pointer">
+        <img src="/assets/settings-icon.png" alt="Settings" className="w-12 h-12" />
+      </Link>
 
       <div className="relative z-10 w-full h-full">
         <Book
