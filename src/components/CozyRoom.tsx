@@ -4,18 +4,17 @@ import Book from './Book';
 import { Users } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
-// Define friend data with new pixel art images and positions
-// TODO update friends to ig handles
+// Define friend data with new pixel art images, positions, and story messages
 const friends = [
-  { id: '1', name: 'Friend Alpha', imageSrc: '/assets/friend-pixel-1.png', position: 'bottom-[20%] left-[25%]' },
-  { id: '2', name: 'Friend Beta', imageSrc: '/assets/friend-pixel-2.png', position: 'bottom-[30%] left-[44%]' }, // Centered more towards the bottom
-  { id: '3', name: 'Friend Gamma', imageSrc: '/assets/friend-pixel-3.png', position: 'bottom-[20%] right-[25%]' }, // On the right side
+  { id: '1', name: 'Friend Alpha', imageSrc: '/assets/friend-pixel-1.png', position: 'bottom-[20%] left-[25%]', storyMessage: "Just baked some cookies! 🍪" },
+  { id: '2', name: 'Friend Beta', imageSrc: '/assets/friend-pixel-2.png', position: 'bottom-[30%] left-[44%]', storyMessage: "New art piece up! 🎨" },
+  { id: '3', name: 'Friend Gamma', imageSrc: '/assets/friend-pixel-3.png', position: 'bottom-[20%] right-[25%]', storyMessage: "Exploring new trails! ⛰️" },
 ];
 
 const CozyRoom: React.FC = () => {
   const { toast } = useToast();
 
-  const handleAvatarClick = (friendName: string) => { //declare a event handler - used later see below
+  const handleAvatarClick = (friendName: string) => {
     toast({
       title: `${friendName}'s Activity`,
       description: "Showing latest stories, posts, and DMs... (placeholder)",
@@ -38,16 +37,13 @@ const CozyRoom: React.FC = () => {
 
   return (
     <div className="relative w-full h-screen bg-cover bg-center font-sans" style={{ backgroundImage: "url('/assets/cozy-room-pixel.png')" }}>
-      {/* Tailwind css - in-html css. Overlay for a cozier feel, adjust opacity as needed */}
       <div className="absolute inset-0 bg-black bg-opacity-10"></div>
 
       <div className="relative z-10 w-full h-full">
-        {/* Book is now rendered before Avatars to appear behind them */}
         <Book
           imageSrc="/assets/book.png"
           label="Leaderboard"
           onClick={handleLeaderboardClick}
-          // Updated position to be near the book in the background image
           positionClasses="top-[46%] left-[44%]"
         />
 
@@ -58,13 +54,10 @@ const CozyRoom: React.FC = () => {
             imageSrc={friend.imageSrc}
             onClick={() => handleAvatarClick(friend.name)}
             positionClasses={friend.position}
+            storyMessage={friend.storyMessage}
           />
         ))}
-
-        {/* You can add more InteractiveItem components here */}
       </div>
-      
-      {/* The title "My Cozy Space" has been removed from here. */}
     </div>
   );
 };
