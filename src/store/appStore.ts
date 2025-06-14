@@ -22,9 +22,9 @@ interface AppState {
 
 const initialState: AppState = {
   friends: [
-    { id: '1', name: 'Friend Alpha', imageSrc: '/assets/friend-pixel-1.png', storyMessage: "Just baked some cookies! 🍪", position: 'bottom-[20%] left-[25%]' },
-    { id: '2', name: 'Friend Beta', imageSrc: '/assets/friend-pixel-2.png', storyMessage: "New art piece up! 🎨", position: 'bottom-[30%] left-[44%]' },
-    { id: '3', name: 'Friend Gamma', imageSrc: '/assets/friend-pixel-3.png', storyMessage: "Exploring new trails! ⛰️", position: 'bottom-[20%] right-[25%]' },
+    { id: '1', name: 'lynnette.tee', imageSrc: '/assets/friend-pixel-1.png', storyMessage: "Just swam fifteen laps! 🏊‍♀️", position: 'bottom-[20%] left-[25%]' },
+    { id: '2', name: 'loopholehackers', imageSrc: '/assets/friend-pixel-2.png', storyMessage: "The vibe is strong in these coders! 🎨", position: 'bottom-[30%] left-[44%]' },
+    { id: '3', name: 'aitinkererskl', imageSrc: '/assets/friend-pixel-3.png', storyMessage: "AI moves mountains! ⛰️", position: 'bottom-[20%] right-[25%]' }, //TODO AI story message or parse <img ...
   ],
   stories: [],
 };
