@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -95,6 +96,10 @@ export default {
         'fade-in-up': {
           '0%': { opacity: '0', transform: 'translateY(20px)' },
           '100%': { opacity: '1', transform: 'translateY(0)' },
+        },
+        'bobbing': { // New keyframes for bobbing
+          '0%, 100%': { transform: 'translateY(-3px)' },
+          '50%': { transform: 'translateY(3px)' },
         }
 			},
 			animation: {
@@ -102,6 +107,8 @@ export default {
 				'accordion-up': 'accordion-up 0.2s ease-out',
         'gentle-pulse': 'gentle-pulse 2s infinite ease-in-out',
         'fade-in-up': 'fade-in-up 0.5s ease-out forwards',
+        'bobbing': 'bobbing 3s infinite ease-in-out', // New bobbing animation utility
+        'fade-in-up-then-bob': 'fade-in-up 0.5s ease-out forwards, bobbing 3s 0.5s infinite ease-in-out', // New combined animation: runs fade-in-up, then starts bobbing 0.5s later (matching fade-in-up duration)
 			}
 		}
 	},
