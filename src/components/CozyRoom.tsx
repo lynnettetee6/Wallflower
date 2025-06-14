@@ -1,15 +1,15 @@
 
-import React, { useState } from 'react';
+import React from 'react';
 import Avatar from './Avatar';
 import InteractiveItem from './InteractiveItem';
-import { Book, MessageCircle, Users } from 'lucide-react'; // Using Book for the leaderboard
-import { useToast } from '@/hooks/use-toast'; // For placeholder interaction
+import { Book, Users } from 'lucide-react';
+import { useToast } from '@/hooks/use-toast';
 
-// Define friend data (can be moved to a data file later)
+// Define friend data with new pixel art images and positions
 const friends = [
-  { id: '1', name: 'Friend Fruity', imageSrc: '/assets/friend-avatar-1.jpg', position: 'top-1/3 left-1/4' },
-  { id: '2', name: 'Friend Tabby', imageSrc: '/assets/friend-avatar-2.jpg', position: 'top-2/3 left-1/3' },
-  { id: '3', name: 'Friend Kitten', imageSrc: '/assets/friend-avatar-3.jpg', position: 'top-1/2 left-3/4' },
+  { id: '1', name: 'Friend Alpha', imageSrc: '/assets/friend-pixel-1.png', position: 'bottom-1/4 left-1/4' },
+  { id: '2', name: 'Friend Beta', imageSrc: '/assets/friend-pixel-2.png', position: 'bottom-1/3 left-1/2' }, // Centered more towards the bottom
+  { id: '3', name: 'Friend Gamma', imageSrc: '/assets/friend-pixel-3.png', position: 'bottom-1/4 right-1/4' }, // On the right side
 ];
 
 const CozyRoom: React.FC = () => {
@@ -37,7 +37,7 @@ const CozyRoom: React.FC = () => {
   };
 
   return (
-    <div className="relative w-full h-screen bg-cover bg-center font-sans" style={{ backgroundImage: "url('/assets/cozy-room.jpg')" }}>
+    <div className="relative w-full h-screen bg-cover bg-center font-sans" style={{ backgroundImage: "url('/assets/cozy-room-pixel.png')" }}>
       {/* Overlay for a cozier feel, adjust opacity as needed */}
       <div className="absolute inset-0 bg-black bg-opacity-10"></div>
 
@@ -56,26 +56,14 @@ const CozyRoom: React.FC = () => {
           IconComponent={Book}
           label="Leaderboard"
           onClick={handleLeaderboardClick}
-          positionClasses="bottom-1/4 left-1/2" // Example position for the book
+          positionClasses="bottom-1/4 left-1/2" // Example position for the book, might need adjustment with new avatar positions
           iconColor="text-amber-700"
         />
         
         {/* You can add more InteractiveItem components here */}
-        {/* Example:
-        <InteractiveItem
-          IconComponent={MessageCircle}
-          label="Chat"
-          onClick={() => console.log('Chat clicked')}
-          positionClasses="bottom-1/3 right-1/4"
-          iconColor="text-blue-500"
-        />
-        */}
       </div>
       
-      <div className="absolute top-4 left-4 bg-primary/80 text-primary-foreground p-3 rounded-lg shadow-lg animate-fade-in-up">
-        <h1 className="text-2xl font-bold">My Cozy Space</h1>
-        <p className="text-sm">A place for friends and mindfulness.</p>
-      </div>
+      {/* The title "My Cozy Space" has been removed from here. */}
     </div>
   );
 };
