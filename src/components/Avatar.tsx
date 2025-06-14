@@ -27,6 +27,13 @@ const Avatar: React.FC<AvatarProps> = ({ name, imageSrc, onClick, positionClasse
       <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 w-max max-w-[200px] sm:max-w-xs">
         <ChatBubble message={storyMessage || defaultStoryMessage} />
       </div>
+      <div className="absolute top-full left-1/2 -translate-x-1/2 mt-2">
+        <div className="px-3 py-1 bg-[#f5e1c8] border-2 border-[#6b4226] rounded shadow">
+            <p className="font-pixel text-[#4a2e1d] text-center text-[1.5vh] whitespace-nowrap leading-none">
+                {name}
+            </p>
+        </div>
+      </div>
     </div>
   );
 };
