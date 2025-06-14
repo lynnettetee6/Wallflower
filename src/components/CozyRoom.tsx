@@ -1,8 +1,7 @@
-
 import React from 'react';
 import Avatar from './Avatar';
 import InteractiveItem from './InteractiveItem';
-import { Book, Users } from 'lucide-react';
+import { Users } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
 // Define friend data with new pixel art images and positions
@@ -53,11 +52,10 @@ const CozyRoom: React.FC = () => {
         ))}
 
         <InteractiveItem
-          IconComponent={Book}
+          imageSrc="/assets/book.png"
           label="Leaderboard"
           onClick={handleLeaderboardClick}
-          positionClasses="bottom-1/4 left-1/2" // Example position for the book, might need adjustment with new avatar positions
-          iconColor="text-amber-700"
+          positionClasses="bottom-1/4 left-1/2"
         />
         
         {/* You can add more InteractiveItem components here */}

@@ -19,7 +19,7 @@ const Avatar: React.FC<AvatarProps> = ({ name, imageSrc, onClick, positionClasse
       <img
         src={imageSrc}
         alt={name}
-        className="w-20 h-20 md:w-28 md:h-28 rounded-full object-cover border-4 border-white shadow-lg transition-all duration-300 group-hover:scale-110 group-hover:shadow-xl animate-gentle-pulse"
+        className="w-22 h-22 md:w-32 md:h-32 rounded-full object-cover shadow-lg transition-all duration-300 group-hover:shadow-xl" // Removed border, pulse, updated size, removed group-hover:scale-110
       />
       <div className="absolute -bottom-4 left-1/2 transform -translate-x-1/2">
         <div className="bg-primary text-primary-foreground px-3 py-1 rounded-full text-xs shadow-md opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center">
