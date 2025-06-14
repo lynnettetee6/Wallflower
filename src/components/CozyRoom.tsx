@@ -2,7 +2,7 @@ import React from 'react';
 import Avatar from './Avatar';
 import Book from './Book';
 import { Users } from 'lucide-react';
-import { useToast } from '@/hooks/use-toast'; //@ == src // hook - a kind of function
+import { useToast } from '@/hooks/use-toast';
 
 // Define friend data with new pixel art images and positions
 // TODO update friends to ig handles
@@ -42,6 +42,15 @@ const CozyRoom: React.FC = () => {
       <div className="absolute inset-0 bg-black bg-opacity-10"></div>
 
       <div className="relative z-10 w-full h-full">
+        {/* Book is now rendered before Avatars to appear behind them */}
+        <Book
+          imageSrc="/assets/book.png"
+          label="Leaderboard"
+          onClick={handleLeaderboardClick}
+          // Updated position to be near the book in the background image
+          positionClasses="top-[58%] left-[48%]"
+        />
+
         {friends.map((friend) => (
           <Avatar
             key={friend.id}
@@ -52,13 +61,6 @@ const CozyRoom: React.FC = () => {
           />
         ))}
 
-        <Book
-          imageSrc="/assets/book.png"
-          label="Leaderboard"
-          onClick={handleLeaderboardClick}
-          positionClasses="bottom-2/4 left-1/2"
-        />
-        
         {/* You can add more InteractiveItem components here */}
       </div>
       
