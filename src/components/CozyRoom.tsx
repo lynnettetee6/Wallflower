@@ -3,7 +3,7 @@ import Avatar from './Avatar';
 import Book from './Book';
 import { Users } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 // Define friend data with new pixel art images, positions, and story messages
 const friends = [
@@ -14,6 +14,7 @@ const friends = [
 
 const CozyRoom: React.FC = () => {
   const { toast } = useToast();
+  const navigate = useNavigate();
 
   const handleAvatarClick = (friendName: string) => {
     toast({
@@ -24,16 +25,7 @@ const CozyRoom: React.FC = () => {
   };
 
   const handleLeaderboardClick = () => {
-    toast({
-      title: "Friend Leaderboard",
-      description: "Showing who is most mindful... (placeholder)",
-      action: (
-        <div className="flex items-center text-sm text-primary hover:underline cursor-pointer">
-          <Users size={16} className="mr-1" /> View Details
-        </div>
-      )
-    });
-    console.log("Leaderboard clicked");
+    navigate('/leaderboard');
   };
 
   return (
