@@ -1,6 +1,7 @@
 
 import React from 'react';
 import { LucideProps } from 'lucide-react';
+import ChatBubble from './ChatBubble';
 
 interface BookProps {
   IconComponent?: React.ElementType<LucideProps>;
@@ -32,10 +33,8 @@ const Book: React.FC<BookProps> = ({ IconComponent, imageSrc, label, onClick, po
           <IconComponent size={28} className={`transition-colors duration-300 ${iconColor} group-hover:text-accent-foreground`} />
         ) : null}
       </div>
-      <div className="absolute -bottom-5 left-1/2 transform -translate-x-1/2">
-        <div className="bg-primary text-primary-foreground px-3 py-1 rounded-full text-xs shadow-md opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-          {label}
-        </div>
+      <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 w-max max-w-[200px] sm:max-w-xs">
+        <ChatBubble message={label} />
       </div>
     </div>
   );

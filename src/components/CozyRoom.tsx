@@ -42,7 +42,7 @@ const CozyRoom: React.FC = () => {
       <div className="relative z-10 w-full h-full">
         <Book
           imageSrc="/assets/book.png"
-          label="Leaderboard"
+          label="The mindful monk award goes to ..."
           onClick={handleLeaderboardClick}
           positionClasses="top-[46%] left-[44%]"
         />

@@ -1,6 +1,17 @@
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  .font-pixel {
+    font-family: 'Press Start 2P', system-ui;
+    font-size: 0.75rem;
+    line-height: 1.25rem;
+    letter-spacing: 0.025em;
+  }
+}
 
 @layer base {
   :root {
