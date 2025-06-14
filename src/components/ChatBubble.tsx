@@ -1,13 +1,18 @@
+
 import React from 'react';
+import { useTypewriter } from '@/hooks/useTypewriter';
 
 interface ChatBubbleProps {
   message: string;
   className?: string;
+  isVisible: boolean;
 }
 
-const ChatBubble: React.FC<ChatBubbleProps> = ({ message, className = "" }) => {
+const ChatBubble: React.FC<ChatBubbleProps> = ({ message, className = "", isVisible }) => {
+  const displayedText = useTypewriter(message, 50, isVisible);
+
   return (
-    <div className={`opacity-0 group-hover:opacity-100 transition-all duration-300 origin-bottom scale-90 group-hover:scale-100 ${className}`}>
+    <div className={`transition-all duration-300 origin-bottom ${isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-90'} ${className}`}>
       <div className="relative">
         {/* Main bubble with pixelated border effect */}
         <div 
@@ -23,8 +28,8 @@ const ChatBubble: React.FC<ChatBubbleProps> = ({ message, className = "" }) => {
           <div className="absolute inset-0 opacity-10 [background-size:8px_8px]
                         [background-image:url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAYAAADED76LAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAkSURBVHgB7cxBCQAACATA0z/IsxekCHuYgMC+VzMzM39wSy1uO2sEZb0oHXEAAAAASUVORK5CYII=')]">
           </div>
-          <div className="relative text-xs font-pixel text-[#3D1F14] [image-rendering:pixelated] [text-shadow:1px_1px_0px_#F5E6D3] break-words whitespace-pre-wrap max-w-[200px]">
-            {message}
+          <div className="relative text-xs font-pixel text-[#3D1F14] [image-rendering:pixelated] [text-shadow:1px_1px_0px_#F5E6D3] break-words whitespace-pre-wrap max-w-[200px] min-h-[1.2em]">
+            {displayedText}
           </div>
         </div>
         {/* Pixelated pointy end */}
