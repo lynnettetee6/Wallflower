@@ -6,6 +6,7 @@ export interface Friend {
   imageSrc: string;
   storyMessage?: string;
   position?: string;
+  streak: number;
 }
 
 export interface Story {
@@ -25,7 +26,17 @@ const loadInitialState = (): AppState => {
   const savedState = localStorage.getItem('appState');
   if (savedState) {
     try {
-      return JSON.parse(savedState);
+      const parsedState = JSON.parse(savedState);
+      // Basic migration/check to add streak to friends if it's missing from localStorage
+      if (parsedState.friends && parsedState.friends.some(f => f.streak === undefined)) {
+        parsedState.friends.forEach(f => {
+          if (f.streak === undefined) {
+             // lynnette.tee has a default streak of 1, others get 0
+            f.streak = f.name === 'lynnette.tee' ? 1 : 0;
+          }
+        });
+      }
+      return parsedState;
     } catch (e) {
       console.error('Failed to parse saved state:', e);
     }
@@ -33,9 +44,9 @@ const loadInitialState = (): AppState => {
   return {
     version: 1, // used for future migrations
     friends: [
-      { id: '1', name: 'lynnette.tee', imageSrc: '/assets/friend-pixel-1.png', storyMessage: "Just swam fifteen laps! 🏊‍♀️", position: 'bottom-[20%] left-[25%]' },
-      { id: '2', name: 'loopholehackers', imageSrc: '/assets/friend-pixel-2.png', storyMessage: "The vibe is immaculate in these coders! 🎨", position: 'bottom-[30%] left-[44%]' },
-      { id: '3', name: 'aitinkererskl', imageSrc: '/assets/friend-pixel-3.png', storyMessage: "AI moves mountains! ⛰️", position: 'bottom-[20%] right-[25%]' },
+      { id: '1', name: 'lynnette.tee', imageSrc: '/assets/friend-pixel-1.png', storyMessage: "Just swam fifteen laps! 🏊‍♀️", position: 'bottom-[20%] left-[25%]', streak: 1 },
+      { id: '2', name: 'loopholehackers', imageSrc: '/assets/friend-pixel-2.png', storyMessage: "The vibe is immaculate in these coders! 🎨", position: 'bottom-[30%] left-[44%]', streak: 0 },
+      { id: '3', name: 'aitinkererskl', imageSrc: '/assets/friend-pixel-3.png', storyMessage: "AI moves mountains! ⛰️", position: 'bottom-[20%] right-[25%]', streak: 0 },
     ],
     stories: [],
   };
@@ -61,7 +72,7 @@ const availableNewFriendPositions = [
 ];
 
 const appStore = {
-  addFriend: (friend: Omit<Friend, 'id' | 'position' | 'storyMessage'>) => {
+  addFriend: (friend: Omit<Friend, 'id' | 'position' | 'storyMessage' | 'streak'>) => {
     const currentPositions = new Set(memoryState.friends.map(f => f.position).filter(Boolean));
     const position = availableNewFriendPositions.find(p => !currentPositions.has(p));
 
@@ -70,6 +81,7 @@ const appStore = {
       id: Date.now().toString(),
       storyMessage: 'No active story',
       position, // This can be undefined if all spots are taken
+      streak: 0,
     };
     memoryState = { ...memoryState, friends: [...memoryState.friends, newFriend] };
     emitChange();

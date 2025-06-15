@@ -12,17 +12,12 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Crown } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Badge } from '@/components/ui/badge';
-
-// Mock data for friends and their mindfulness streaks
-const friendsData = [
-  { id: '1', name: 'lynnette.tee', imageSrc: '/assets/friend-pixel-1.png', streak: 1 },
-  { id: '2', name: 'loopholehackers', imageSrc: '/assets/friend-pixel-2.png', streak: 0 },
-  { id: '3', name: 'aitinkererskl', imageSrc: '/assets/friend-pixel-3.png', streak: 0 },
-  // { id: '4', name: 'Friend Delta', imageSrc: '/assets/friend-pixel-2.png', streak: 10 },
-  // { id: '5', name: 'Friend Epsilon', imageSrc: '/assets/friend-pixel-3.png', streak: 5 },
-].sort((a, b) => b.streak - a.streak);
+import { useAppStore } from '@/store/appStore';
 
 const LeaderboardTable: React.FC = () => {
+  const { friends } = useAppStore();
+  const friendsData = [...friends].sort((a, b) => b.streak - a.streak);
+
   const getMedalColor = (rank: number) => {
     switch (rank) {
       case 1:
