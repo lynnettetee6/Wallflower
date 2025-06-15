@@ -15,11 +15,11 @@ import { Badge } from '@/components/ui/badge';
 
 // Mock data for friends and their mindfulness streaks
 const friendsData = [
-  { id: '1', name: 'Friend Alpha', imageSrc: '/assets/friend-pixel-1.png', streak: 21 },
-  { id: '2', name: 'Friend Beta', imageSrc: '/assets/friend-pixel-2.png', streak: 15 },
-  { id: '3', name: 'Friend Gamma', imageSrc: '/assets/friend-pixel-3.png', streak: 18 },
-  { id: '4', name: 'Friend Delta', imageSrc: '/assets/friend-pixel-2.png', streak: 10 },
-  { id: '5', name: 'Friend Epsilon', imageSrc: '/assets/friend-pixel-3.png', streak: 5 },
+  { id: '1', name: 'lynnette.tee', imageSrc: '/assets/friend-pixel-1.png', streak: 1 },
+  { id: '2', name: 'loopholehackers', imageSrc: '/assets/friend-pixel-2.png', streak: 0 },
+  { id: '3', name: 'aitinkererskl', imageSrc: '/assets/friend-pixel-3.png', streak: 0 },
+  // { id: '4', name: 'Friend Delta', imageSrc: '/assets/friend-pixel-2.png', streak: 10 },
+  // { id: '5', name: 'Friend Epsilon', imageSrc: '/assets/friend-pixel-3.png', streak: 5 },
 ].sort((a, b) => b.streak - a.streak);
 
 const LeaderboardTable: React.FC = () => {

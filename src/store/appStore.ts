@@ -17,6 +17,7 @@ export interface Story {
 interface AppState {
   friends: Friend[];
   stories: Story[];
+  version: number;
 }
 
 // Load initial state from localStorage or use default
@@ -30,6 +31,7 @@ const loadInitialState = (): AppState => {
     }
   }
   return {
+    version: 1, // used for future migrations
     friends: [
       { id: '1', name: 'lynnette.tee', imageSrc: '/assets/friend-pixel-1.png', storyMessage: "Just swam fifteen laps! 🏊‍♀️", position: 'bottom-[20%] left-[25%]' },
       { id: '2', name: 'loopholehackers', imageSrc: '/assets/friend-pixel-2.png', storyMessage: "The vibe is immaculate in these coders! 🎨", position: 'bottom-[30%] left-[44%]' },
@@ -52,27 +54,78 @@ function emitChange() {
 
 const appStore = {
   addFriend: (friend: Omit<Friend, 'id' | 'position' | 'storyMessage'>) => {
-    const newFriend: Friend = { ...friend, id: Date.now().toString(), storyMessage: 'What am I up to?' };
+    const newFriend: Friend = { ...friend, id: Date.now().toString(), storyMessage: 'No active story' };
     memoryState = { ...memoryState, friends: [...memoryState.friends, newFriend] };
     emitChange();
   },
+  
   deleteFriend: (friendId: string) => {
     memoryState = { ...memoryState, friends: memoryState.friends.filter(f => f.id !== friendId) };
     emitChange();
   },
+  
   setStories: (stories: Story[]) => {
     memoryState = { ...memoryState, stories };
     emitChange();
   },
+  
+  updateFriendStoryMessages: async (): Promise<boolean> => {
+    try {
+      const friendUsernames = memoryState.friends.map(f => f.name);
+      const response = await fetch('/api/analyze-stories', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ usernames: friendUsernames }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to fetch story messages');
+      }
+
+      const { success, data } = await response.json();
+      if (!success || !Array.isArray(data)) {
+        throw new Error('API returned unsuccessful response or invalid data');
+      }
+      // debugger;
+      console.log('Raw API Response:', { success, data });
+      // Create a map of active stories by username
+      const activeStories = new Map<string, string>();
+      data.forEach((entry: string) => {
+        const [username, ...messageParts] = entry.split(':');
+        const message = messageParts.join(':').trim();
+        if (message && message !== 'No active story') {
+          activeStories.set(username.trim(), message);
+        }
+      });
+
+      // Update friend story messages, clearing messages for inactive stories
+      const updatedFriends = memoryState.friends.map(friend => {
+        const storyMessage = activeStories.get(friend.name) || 'No active story';
+        // debugger;
+        console.log(`Updating story for ${friend.name}: ${storyMessage}`);
+        return {
+          ...friend,
+          storyMessage
+        };
+      });
+
+      memoryState = { ...memoryState, friends: updatedFriends };
+      emitChange();
+      return true;
+    } catch (error) {
+      console.error('Failed to update story messages:', error);
+      return false;
+    }
+  },
+  
   subscribe: (listener: (state: AppState) => void): (() => void) => {
     listeners.push(listener);
     return () => {
       const index = listeners.indexOf(listener);
-      if (index > -1) {
-        listeners.splice(index, 1);
-      }
+      listeners.splice(index, 1);
     };
   },
+  
   getSnapshot: (): AppState => memoryState,
 };
 
@@ -84,5 +137,6 @@ export function useAppStore() {
     addFriend: appStore.addFriend,
     deleteFriend: appStore.deleteFriend,
     setStories: appStore.setStories,
+    updateFriendStoryMessages: appStore.updateFriendStoryMessages,
   };
 }

@@ -10,19 +10,26 @@ import { useAppStore } from '@/store/appStore';
 const daysOfWeek = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 
 const RefreshTimeSettings: React.FC = () => {
-  const { friends, setStories } = useAppStore();
+  const { friends, setStories, updateFriendStoryMessages } = useAppStore();
   const { toast } = useToast();
 
   const handleRefreshNow = async () => {
-    toast({ title: "Refreshing stories..." });
-    const friendUsernames = friends.map(f => f.name);
+    toast({ title: "Refreshing stories and messages..." });
+    let hasErrors = false;
 
     try {
-      console.log('Attempting to fetch stories from API with usernames:', friendUsernames);
+      // First, try to fetch story messages
+      const messageSuccess = await updateFriendStoryMessages();
+      if (!messageSuccess) {
+        console.error('Failed to update story messages');
+        hasErrors = true;
+      }
+
+      // Then fetch story images
       const response = await fetch('/api/check-stories', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ usernames: friendUsernames }),
+        body: JSON.stringify({ usernames: friends.map(f => f.name) }),
       });
 
       if (!response.ok) {
@@ -37,33 +44,34 @@ const RefreshTimeSettings: React.FC = () => {
       }
 
       // Transform the API response into Story objects
-      // Each data item is in format "friendName:filename"
-      const newStories = data.map(item => {
-        const [friendName, filename] = item.split(':');
-        return {
-          id: `story-${Date.now()}-${Math.random()}`,
-          friendName,
-          imageUrl: `/stories/${filename}` // Use only the filename part after the colon
-        };
-      });
+      const newStories = data
+        .filter((item: string) => item.includes(':')) // Make sure we have valid data
+        .map((item: string) => {
+          const [friendName, filename] = item.split(':');
+          return {
+            id: `story-${Date.now()}-${Math.random()}`,
+            friendName: friendName.trim(),
+            imageUrl: `/stories/${filename.trim()}`
+          };
+        });
 
       console.log('Transformed stories:', newStories);
       setStories(newStories);
 
-      // Group stories by friend for the success message
-      const storiesByFriend = newStories.reduce((acc, story) => {
-        acc[story.friendName] = (acc[story.friendName] || 0) + 1;
-        return acc;
-      }, {} as Record<string, number>);
-
-      const friendSummary = Object.entries(storiesByFriend)
-        .map(([friend, count]) => `${friend} (${count})`)
-        .join(', ');
-
-      toast({
-        title: "Success!",
-        description: `Found stories for: ${friendSummary}`,
-      });
+      // Show appropriate toast message
+      if (hasErrors) {
+        toast({
+          title: "Partial Success",
+          description: "Stories updated, but some messages couldn't be fetched.",
+          variant: "default",
+        });
+      } else {
+        toast({
+          title: "Success!",
+          description: "Stories and messages updated successfully.",
+          variant: "default",
+        });
+      }
 
     } catch (error) {
       console.error("Failed to fetch stories:", error);

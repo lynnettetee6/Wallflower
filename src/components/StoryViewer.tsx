@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Dialog, DialogContent } from '@/components/ui/dialog';
 import { Story } from '@/store/appStore';
 import { ArrowLeft, ArrowRight, X } from 'lucide-react';
@@ -12,32 +12,46 @@ interface StoryViewerProps {
 
 const StoryViewer: React.FC<StoryViewerProps> = ({ stories, open, onOpenChange }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
-  console.log('StoryViewer rendered with:', { stories, open, currentIndex }); // Debug log
 
   React.useEffect(() => {
     if (open) {
       setCurrentIndex(0);
-      console.log('StoryViewer opened, reset to first story'); // Debug log
     }
   }, [open]);
 
+  const goToNext = useCallback((e?: React.MouseEvent) => {
+    e?.stopPropagation();
+    setCurrentIndex((prev) => (prev + 1) % stories.length);
+  }, [stories.length]);
+
+  const goToPrev = useCallback((e?: React.MouseEvent) => {
+    e?.stopPropagation();
+    setCurrentIndex((prev) => (prev - 1 + stories.length) % stories.length);
+  }, [stories.length]);
+
+  // Add keyboard navigation
+  useEffect(() => {
+    if (!open) return;
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'ArrowLeft') {
+        goToPrev();
+      } else if (e.key === 'ArrowRight') {
+        goToNext();
+      } else if (e.key === 'Escape') {
+        onOpenChange(false);
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [open, goToPrev, goToNext, onOpenChange]);
+
   if (!stories || stories.length === 0) {
-    console.log('No stories to display in StoryViewer'); // Debug log
     return null;
   }
 
   const currentStory = stories[currentIndex];
-  console.log('Current story:', currentStory); // Debug log
-
-  const goToNext = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    setCurrentIndex((prev) => (prev + 1) % stories.length);
-  };
-
-  const goToPrev = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    setCurrentIndex((prev) => (prev - 1 + stories.length) % stories.length);
-  };
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -61,18 +75,18 @@ const StoryViewer: React.FC<StoryViewerProps> = ({ stories, open, onOpenChange }
               <Button
                 variant="ghost"
                 size="icon"
-                className="absolute left-4 sm:left-12 top-1/2 -translate-y-1/2 z-50 text-white bg-black/50 hover:bg-black/75 rounded-full"
+                className="absolute left-4 sm:left-12 top-1/2 -translate-y-1/2 z-50 w-24 h-24 p-0 hover:bg-transparent"
                 onClick={goToPrev}
               >
-                <ArrowLeft />
+                <ArrowLeft className="h-24 w-24 stroke-[#3E1C0D] stroke-2 fill-[#DEB887] drop-shadow-[4px_4px_4px_rgba(0,0,0,0.3)] transition-transform hover:scale-110" />
               </Button>
               <Button
                 variant="ghost"
                 size="icon"
-                className="absolute right-4 sm:right-12 top-1/2 -translate-y-1/2 z-50 text-white bg-black/50 hover:bg-black/75 rounded-full"
+                className="absolute right-4 sm:right-12 top-1/2 -translate-y-1/2 z-50 w-24 h-24 p-0 hover:bg-transparent"
                 onClick={goToNext}
               >
-                <ArrowRight />
+                <ArrowRight className="h-24 w-24 stroke-[#3E1C0D] stroke-2 fill-[#DEB887] drop-shadow-[4px_4px_4px_rgba(0,0,0,0.3)] transition-transform hover:scale-110" />
               </Button>
             </>
           )}

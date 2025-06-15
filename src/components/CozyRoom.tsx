@@ -18,9 +18,9 @@ const CozyRoom: React.FC = () => {
   const [isStoryViewerOpen, setIsStoryViewerOpen] = useState(false);
   const [activeStories, setActiveStories] = useState<Story[]>([]);
 
-  const playAvatarSound = useSound('/assets/avatar-click.mp3');
+  const playAvatarSound = useSound('/assets/click.mp3');
   const playBookSound = useSound('/assets/book-click.mp3');
-  const playSettingsSound = useSound('/assets/settings-click.mp3');
+  const playSettingsSound = useSound('/assets/click.mp3');
 
   const handleAvatarClick = (friendName: string) => {
     playAvatarSound();
