@@ -1,12 +1,11 @@
-
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import Avatar from './Avatar';
 import Book from './Book';
 import { useToast } from '@/hooks/use-toast';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAppStore } from '@/store/appStore';
 import StoryViewer from './StoryViewer';
-import type { Story } from '@/store/appStore';
+import type { Friend, Story } from '@/store/appStore';
 import useSound from '@/hooks/useSound';
 
 const CozyRoom: React.FC = () => {
@@ -55,6 +54,32 @@ const CozyRoom: React.FC = () => {
     navigate('/leaderboard');
   };
 
+  const getVerticalSortValue = (positionString: string | undefined): number => {
+    if (!positionString) return 0;
+
+    const bottomMatch = positionString.match(/bottom-\[(\d+)%\]/);
+    if (bottomMatch && bottomMatch[1]) {
+      return parseInt(bottomMatch[1], 10);
+    }
+
+    const topMatch = positionString.match(/top-\[(\d+)%\]/);
+    if (topMatch && topMatch[1]) {
+      // Convert top percentage to a bottom-based value for consistent sorting
+      return 100 - parseInt(topMatch[1], 10);
+    }
+    
+    return 0;
+  };
+
+  const sortedFriends = useMemo(() => {
+    return [...friends].sort((a: Friend, b: Friend) => {
+      const posA = getVerticalSortValue(a.position);
+      const posB = getVerticalSortValue(b.position);
+      // Sort descending: higher vertical position value (further back) comes first
+      return posB - posA;
+    });
+  }, [friends]);
+
   return (
     <>
       <div className="relative w-full h-screen bg-cover bg-center font-sans" style={{ backgroundImage: "url('/assets/cozy-room-pixel.png')" }}>
@@ -72,7 +97,7 @@ const CozyRoom: React.FC = () => {
             positionClasses="top-[46%] left-[44%]"
           />
 
-          {friends.map((friend) => (
+          {sortedFriends.map((friend) => (
             friend.position ? (
               <Avatar
                 key={friend.id}
