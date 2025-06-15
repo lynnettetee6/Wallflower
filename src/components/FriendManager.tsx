@@ -8,19 +8,21 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { Trash2, Edit } from 'lucide-react';
 import { useAppStore } from '@/store/appStore';
 import { useToast } from '@/hooks/use-toast';
+import ImageDropzone from './ImageDropzone';
 
 const FriendManager: React.FC = () => {
   const { friends, addFriend, deleteFriend } = useAppStore();
   const { toast } = useToast();
   const [name, setName] = useState('');
   const [imageSrc, setImageSrc] = useState('');
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
 
   const handleAddFriend = (e: React.FormEvent) => {
     e.preventDefault();
     if (!name || !imageSrc) {
       toast({
         title: "Missing fields",
-        description: "Please provide a name and image URL.",
+        description: "Please provide a name and an image.",
         variant: "destructive",
       });
       return;
@@ -28,6 +30,7 @@ const FriendManager: React.FC = () => {
     addFriend({ name, imageSrc });
     setName('');
     setImageSrc('');
+    setImagePreview(null);
     toast({ title: "Friend added!", description: `${name} is now on your friend list.` });
   };
 
@@ -83,8 +86,12 @@ const FriendManager: React.FC = () => {
               <Input id="name" placeholder="Pixel Pal" className="bg-white" value={name} onChange={(e) => setName(e.target.value)} />
             </div>
             <div>
-              <Label htmlFor="imageSrc" className="text-amber-900">Image URL</Label>
-              <Input id="imageSrc" placeholder="/assets/friend-pixel-4.png" className="bg-white" value={imageSrc} onChange={(e) => setImageSrc(e.target.value)} />
+              <Label className="text-amber-900">Friend Image</Label>
+              <ImageDropzone
+                onImageUpload={setImageSrc}
+                imagePreview={imagePreview}
+                setImagePreview={setImagePreview}
+              />
             </div>
             <Button type="submit" className="bg-green-700 hover:bg-green-800">Add Friend</Button>
           </form>
