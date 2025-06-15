@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import Avatar from './Avatar';
 import Book from './Book';
 import { useToast } from '@/hooks/use-toast';
@@ -16,6 +16,13 @@ const CozyRoom: React.FC = () => {
 
   const [isStoryViewerOpen, setIsStoryViewerOpen] = useState(false);
   const [activeStories, setActiveStories] = useState<Story[]>([]);
+  const [contentVisible, setContentVisible] = useState(false);
+
+  useEffect(() => {
+    // A small delay to prevent characters from flickering at the wrong position on load.
+    const timer = setTimeout(() => setContentVisible(true), 50);
+    return () => clearTimeout(timer);
+  }, []);
 
   const playAvatarSound = useSound('/assets/click.mp3');
   const playBookSound = useSound('/assets/book-click.mp3');
@@ -89,7 +96,7 @@ const CozyRoom: React.FC = () => {
           <img src="/assets/settings-icon.png" alt="Settings" className="w-12 h-12" />
         </Link>
 
-        <div className="relative z-10 w-full h-full">
+        <div className={`relative z-10 w-full h-full transition-opacity duration-500 ease-in-out ${contentVisible ? 'opacity-100' : 'opacity-0'}`}>
           <Book
             imageSrc="/assets/book.png"
             label="The mindful monk award goes to ..."

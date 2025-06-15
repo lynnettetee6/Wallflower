@@ -1,17 +1,18 @@
+
 import React from 'react';
 import { useTypewriter } from '@/hooks/useTypewriter';
 
 interface ChatBubbleProps {
   message: string;
   className?: string;
-  isVisible: boolean;
+  isVisible?: boolean;
   friendImageSrc?: string;
 }
 
 const ChatBubble: React.FC<ChatBubbleProps> = ({ 
   message, 
   className = "", 
-  isVisible,
+  isVisible = true, 
   friendImageSrc 
 }) => {
   const displayedText = useTypewriter(message, 50, isVisible, friendImageSrc);
