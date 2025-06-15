@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
@@ -14,7 +15,10 @@ const RefreshTimeSettings: React.FC = () => {
   const { toast } = useToast();
 
   const handleRefreshNow = async () => {
-    toast({ title: "Refreshing stories and messages..." });
+    const { id, update } = toast({
+      title: "Refreshing stories and messages...",
+      description: "Please wait. This may take a moment.",
+    });
     let hasErrors = false;
 
     try {
@@ -90,13 +94,15 @@ const RefreshTimeSettings: React.FC = () => {
 
       // Show appropriate toast message
       if (hasErrors) {
-        toast({
+        update({
+          id,
           title: "Partial Success",
           description: "Stories updated, but some messages couldn't be fetched.",
           variant: "default",
         });
       } else {
-        toast({
+        update({
+          id,
           title: "Success!",
           description: "Stories and messages updated successfully.",
           variant: "default",
@@ -110,7 +116,8 @@ const RefreshTimeSettings: React.FC = () => {
         message: error.message,
         stack: error.stack
       });
-      toast({
+      update({
+        id,
         title: "Error",
         description: "Could not fetch stories. Is the local server running?",
         variant: "destructive",
