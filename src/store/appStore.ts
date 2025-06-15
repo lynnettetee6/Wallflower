@@ -52,9 +52,25 @@ function emitChange() {
   }
 }
 
+// These are positions for newly added friends so they don't overlap.
+const availableNewFriendPositions = [
+  'bottom-[30%] left-[60%]', // On couch, next to loopholehackers
+  'top-[50%] left-[20%]',    // On the armchair
+  'bottom-[45%] left-[50%]', // On the rug in the middle
+  'bottom-[20%] right-[10%]', // On the floor, far right
+];
+
 const appStore = {
   addFriend: (friend: Omit<Friend, 'id' | 'position' | 'storyMessage'>) => {
-    const newFriend: Friend = { ...friend, id: Date.now().toString(), storyMessage: 'No active story' };
+    const currentPositions = new Set(memoryState.friends.map(f => f.position).filter(Boolean));
+    const position = availableNewFriendPositions.find(p => !currentPositions.has(p));
+
+    const newFriend: Friend = {
+      ...friend,
+      id: Date.now().toString(),
+      storyMessage: 'No active story',
+      position, // This can be undefined if all spots are taken
+    };
     memoryState = { ...memoryState, friends: [...memoryState.friends, newFriend] };
     emitChange();
   },
