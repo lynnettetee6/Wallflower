@@ -18,7 +18,37 @@ const RefreshTimeSettings: React.FC = () => {
     let hasErrors = false;
 
     try {
-      // First, try to fetch story messages
+      // // First, delete all existing stories TODO
+      // const deleteResponse = await fetch('/api/delete-stories', {
+      //   method: 'POST',
+      //   headers: { 'Content-Type': 'application/json' }
+      // });
+
+      
+      // console.log('Delete stories response status:', deleteResponse.ok);
+      // if (!deleteResponse.ok) {
+      //   throw new Error('Failed to connect to delete-stories endpoint');
+      // }
+
+      // const deleteResult = await deleteResponse.json();
+      // console.log('Delete stories response:', deleteResult);
+
+      // if (!deleteResult.success) {
+      //   toast({
+      //     title: "Error",
+      //     description: deleteResult.details || deleteResult.error || "Failed to delete stories",
+      //     variant: "destructive",
+      //   });
+      //   hasErrors = true;
+      // } else {
+      //   toast({
+      //     title: "Cleanup",
+      //     description: deleteResult.message,
+      //     variant: "default",
+      //   });
+      // }
+
+      // Then, try to fetch story messages
       const messageSuccess = await updateFriendStoryMessages();
       if (!messageSuccess) {
         console.error('Failed to update story messages');

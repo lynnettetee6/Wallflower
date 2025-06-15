@@ -100,7 +100,6 @@ const appStore = {
 
       const { success, data } = await response.json();
       if (!success || !Array.isArray(data)) {
-        throw new Error('API returned unsuccessful response or invalid data');
       }
       // debugger;
       console.log('Raw API Response:', { success, data });

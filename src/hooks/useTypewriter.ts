@@ -33,6 +33,8 @@ export const useTypewriter = (text: string, speed: number = 50, enabled: boolean
         // Choose murmur sound based on friend's image
         if (friendImageSrc?.includes('friend-pixel-3.png')) {
           audio.src = '/assets/murmur-m.mp3';  // Male murmur for friend-pixel-3
+        } else if (friendImageSrc?.includes('friend-pixel-4.png')) {
+          audio.src = '/assets/murmur-m2.mp3'; // Special female murmur for friend-pixel-2
         } else if (friendImageSrc?.includes('friend-pixel-2.png')) {
           audio.src = '/assets/murmur-f2.mp3'; // Special female murmur for friend-pixel-2
         } else {
