@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom';
 const Leaderboard: React.FC = () => {
   return (
     <div
-      className="min-h-screen w-full bg-cover bg-center p-4 sm:p-8 flex items-center justify-center font-sans"
+      className="min-h-screen w-full bg-cover bg-center bg-black p-4 sm:p-8 flex items-center justify-center font-sans"
       style={{ backgroundImage: "url('/assets/settings-bg.png')" }}
     >
       <div className="absolute top-4 left-4 z-20">

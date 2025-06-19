@@ -21,7 +21,7 @@ interface AppState {
   version: number;
 }
 
-// Load initial state from localStorage or use default
+// Load initial state from localStorage or use default TODO
 const loadInitialState = (): AppState => {
   const savedState = localStorage.getItem('appState');
   if (savedState) {

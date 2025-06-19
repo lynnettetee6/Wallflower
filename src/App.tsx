@@ -8,6 +8,7 @@ import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import Settings from "./pages/Settings";
 import Leaderboard from "./pages/Leaderboard";
+import BackgroundMusic from "./components/BackgroundMusic";
 
 const queryClient = new QueryClient();
 
@@ -16,6 +17,7 @@ const App = () => (
     <TooltipProvider>
       <Toaster /> {/* TODO need?*/}
       <Sonner /> {/* TODO need?*/}
+      <BackgroundMusic />
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Index />} />

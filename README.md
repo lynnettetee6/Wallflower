@@ -74,3 +74,4 @@ Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-trick
 
 -- [INT] TODO
 localStorage.clear() in Browser console
+use fs to access stories/ . vs api?
